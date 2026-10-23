@@ -27,7 +27,7 @@ import tkinter as tk
         return_name (data type): Description of what the function returns
     
     Globals:
-        global_name (data type): Description of any global variables used
+        global_name (data type): Description of the global variable used
     
     Sources:
         Add links to any sources used
