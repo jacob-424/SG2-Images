@@ -1,4 +1,3 @@
-import tkinter as tk
 import numpy as np
 import sys
 from PIL import Image
@@ -17,7 +16,11 @@ from PIL import Image
     
     Program description:
     
+    Central Data Structures:
+    
     External files used:
+    
+    Sources:
 """
 
 ### Function documentation format.
@@ -162,7 +165,75 @@ def patternDetection(image_arr):
     print(f"{len(coordinates)} Patterns found at the following locations: {coordinates}")
             
     return coordinates
-            
+
+def getGrayness(pixel):
+    """ Returns the grayscale color that pixel represents.
+
+    Args:
+        pixel (int or float): A value in the range of 0-255
+        
+    Returns:
+        grayness (string): The color of pixel, either black, dark gray, gray, light gray, or white
+    """
+    grayness = ""
+    
+    if pixel <= 50:
+        grayness = "Black"
+    elif pixel <= 101:
+        grayness = "Dark Gray"
+    elif pixel <= 153:
+        grayness = "Gray"
+    elif pixel <= 204:
+        grayness = "Light Gray"
+    elif pixel <= 255:
+        grayness = "White"
+        
+    return grayness
+
+def imageStats(arr_image):
+    """ Outputs various statistics about BallotX.png including height/width, range of pixel values,
+        the number of black and white pixels, and the average pixel value.
+
+    Args:
+        arr_image (np.ndarray): BallotX.png as an array of pixel values between 0-255
+    
+    Sources:
+        https://www.geeksforgeeks.org/numpy/numpy-array-functions/
+    """
+    ### Collect stats
+    height = arr_image.shape[0]
+    width = arr_image.shape[1]
+    
+    # Get range of pixel values and the grayscale color
+    min_pixel = arr_image.min()
+    min_grayness = getGrayness(min_pixel)
+    max_pixel = arr_image.max()
+    max_grayness = getGrayness(max_pixel)
+    
+    # Get the number of black and white pixels
+    num_of_black = np.sum(arr_image == 0)
+    num_of_white = np.sum(arr_image == 255)
+    
+    # Get the average value of each pixel
+    avg_pixel = arr_image.mean()
+    avg_grayness = getGrayness(avg_pixel)
+    
+    ### Output stats
+    print("BallotX.png Statistics:")
+    
+    print(f"Height: {height} pixels")
+    print(f"Width: {width} pixels")
+    
+    if min_grayness == max_grayness:
+        print(f"Grayscale Range: {min_pixel}-{max_pixel} ({min_grayness})")
+    else:
+        print(f"Grayscale Range: {min_pixel}-{max_pixel} ({min_grayness} to {max_grayness})")
+        
+    print(f"Number of black pixels: {num_of_black}")
+    print(f"Number of white pixels: {num_of_white}")
+        
+    print(f"Average pixel value: {avg_pixel:.2f} ({avg_grayness})")
+
 def main():
     ...
     
@@ -172,13 +243,15 @@ def main():
     
     # TODO: 2) Plus pattern detection
     arr_image = convertImageToArr('BallotX.png')
-    coords_found = patternDetection(arr_image) 
+    coords_found = patternDetection(arr_image)
     
     # TODO: 3) Check pattern alignment
     
     # TODO: 4) Move image and display
     
     # TODO: 5) Image statistics
+    imageStats(arr_image)
+    
     
 if __name__ == "__main__":
     main()
