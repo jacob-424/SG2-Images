@@ -36,17 +36,18 @@ from PIL import Image
         Add links to any sources used
 """
 
-def convertImageToArr(filename):
+def convertImageToArr(filename: str) -> np.ndarray:
     """ Converts a PNG image into a Numpy array with pixel values ranging from 0 to 255 in a grayscale.
     
         Args:
-            filename (String): contains the name of the file to be converted
+            filename (str): contains the name of the file to be converted
         
         Returns:
             image_to_arr (np.ndarray): holds the image as a np array.
             
         Sources:
-            imageToArray function from SG1- Small Group 3.
+            Adapted from the imageToArray function from SG1- Small Group 3.
+            the original code was modified to meet the requirements of this project.
             
     """
     # converts image to grayscale
@@ -69,7 +70,8 @@ def patternDetection(image_arr: np.ndarray) -> list[tuple[int,int]]:
             coordinates (list[tuple[int,int]]): holds the coordinates found in the image as (row, column)
             
         Sources:
-            patternLookup function from SG1- Small Group 3.
+            Adapted from the patternLookup function from SG1- Small Group 3.
+            the original code was modified to meet the requirements of this project.
             
     """
     
@@ -85,8 +87,9 @@ def patternDetection(image_arr: np.ndarray) -> list[tuple[int,int]]:
             "True" if the arrays match, "False otherwise"
             
         Sources:
-            patternMatch function from SG1- Small Group 3.
-            
+            Adapted from the patternMatch function from SG1- Small Group 3.
+            the original code was modified to meet the requirements of this project.
+
         """
         
         #compare the elements only if the shapes are equal,
@@ -137,6 +140,7 @@ def patternDetection(image_arr: np.ndarray) -> list[tuple[int,int]]:
                 coordinates.append(location)
                 occurrences += 1
                 
+    # Raise error if the pattern does not appear 2 times 
     if occurrences != 2:
         print("Error: Exactly 2 pattern occurrences are allowed in the image.")
         if occurrences == 0:
@@ -144,12 +148,20 @@ def patternDetection(image_arr: np.ndarray) -> list[tuple[int,int]]:
         else:
             print(f"Pattern occurrences: {len(coordinates)}")
             print(f"location: {coordinates}")
+        
+        #TODO: REMOVE AND COMMENT OUT ONCE THE MAIN FUNCTION IS COMPLETE
         sys.exit(1)
+        #return None
 
+    # Print the coordinates
     print(f"{len(coordinates)} Patterns found at the following locations: {coordinates}")
+    
+    # Make sure the patterns do not overlap. 
     if abs(coordinates[0][0] - coordinates[1][0]) < pattern_rows and abs(coordinates[0][1] - coordinates[1][1]) < pattern_cols:
         print("Error. The patterns must not share any pixels.")
+        #TODO: REMOVE AND COMMENT OUT ONCE THE MAIN FUNCTION IS COMPLETE
         sys.exit(1)
+        #return None
     return coordinates
             
 def main():
@@ -160,8 +172,11 @@ def main():
     # TODO: 1) PNG File input and validation
     
     # TODO: 2) Plus pattern detection
-    arr_image = convertImageToArr('overlap2.png')
-    coords_found = patternDetection(arr_image) 
+    while True:
+        arr_image = convertImageToArr('BallotX.png')
+        coords_found = patternDetection(arr_image)
+        if coords_found is not None:
+            break
     
     # TODO: 3) Check pattern alignment
     
