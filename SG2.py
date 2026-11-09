@@ -57,7 +57,7 @@ def convertImageToArr(filename):
 
     return image_to_arr
 
-def patternDetection(image_arr):
+def patternDetection(image_arr: np.ndarray) -> list[tuple[int,int]]:
     """ loops trough an image array and compares the pixels to match a specific pattern.
         The image is allowed to have only 2 patterns. if other number of patterns found,
         it prints a descriptive message and raises an error.
@@ -112,22 +112,8 @@ def patternDetection(image_arr):
         [0,255,255,255,255,255,0,255,255,255,255,255,0],
         [0,255,255,255,255,255,0,255,255,255,255,255,0],
         [0, 0,  0,  0,  0,  0, 0, 0,  0,  0,  0,  0, 0]])
-    
-    # pattern = np.array([
-    #    [0,0,0,0,0,0,0,0,0,0,0,0,0],
-    #    [0,1,1,1,1,1,0,1,1,1,1,1,0],
-    #    [0,1,1,1,1,1,0,1,1,1,1,1,0],
-    #    [0,1,1,1,1,1,0,1,1,1,1,1,0],
-    #    [0,1,1,1,1,1,0,1,1,1,1,1,0],
-    #    [0,1,1,1,1,1,0,1,1,1,1,1,0],
-    #    [0,0,0,0,0,0,0,0,0,0,0,0,0],
-    #    [0,1,1,1,1,1,0,1,1,1,1,1,0],
-    #    [0,1,1,1,1,1,0,1,1,1,1,1,0],
-    #    [0,1,1,1,1,1,0,1,1,1,1,1,0],
-    #    [0,1,1,1,1,1,0,1,1,1,1,1,0],
-    #    [0,1,1,1,1,1,0,1,1,1,1,1,0],
-    #    [0,0,0,0,0,0,0,0,0,0,0,0,0]])
-        
+ 
+          
     occurrences = 0
     coordinates = []
     row = 0
@@ -140,8 +126,8 @@ def patternDetection(image_arr):
     pattern_cols = pattern.shape[1]
     
     #iterate over the entire target matrix, sliding a 11x11 submatrix over it.
-    for row in range (image_rows - pattern_rows - 1):
-        for column in range(image_cols - pattern_cols - 1):
+    for row in range (image_rows - pattern_rows + 1):
+        for column in range(image_cols - pattern_cols + 1):
             submatrix = image_arr[row:row + pattern_rows, column:column + pattern_cols]
             
             # check if the submatrix matches the pattern
@@ -159,8 +145,11 @@ def patternDetection(image_arr):
             print(f"Pattern occurrences: {len(coordinates)}")
             print(f"location: {coordinates}")
         sys.exit(1)
+
     print(f"{len(coordinates)} Patterns found at the following locations: {coordinates}")
-            
+    if abs(coordinates[0][0] - coordinates[1][0]) < pattern_rows and abs(coordinates[0][1] - coordinates[1][1]) < pattern_cols:
+        print("Error. The patterns must not share any pixels.")
+        sys.exit(1)
     return coordinates
             
 def main():
@@ -171,7 +160,7 @@ def main():
     # TODO: 1) PNG File input and validation
     
     # TODO: 2) Plus pattern detection
-    arr_image = convertImageToArr('BallotX.png')
+    arr_image = convertImageToArr('overlap2.png')
     coords_found = patternDetection(arr_image) 
     
     # TODO: 3) Check pattern alignment
