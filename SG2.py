@@ -159,6 +159,34 @@ def patternDetection(image_arr: np.ndarray) -> list[tuple[int,int]]:
         sys.exit(1)
         #return None
     return coordinates
+
+def check_pattern_alignment(coordinates):
+    """ This function compares the coordinate values returned from the "patternDetection" function, checking
+        for horizontal alignment between the detected patterns based on row values of pattern center.
+        Globals:
+            None
+        Args:
+            coordinates - represents a list containing two integer tuples representing the center coordinates
+            of patterns 1 and 2. coordinates are represented as (row,column). 
+        
+        Returns:
+            True if the center coordinates share the same row and are horizontally aligned
+            False otherwise
+            
+        """
+    
+    print(f"\tPattern 1 has size of 13 x 13 with center located at {coordinates[0]}.")
+    print(f"\tPattern 2 has size of 13 x 13 with center located at {coordinates[1]}.")
+    
+    if (coordinates[0][0] == coordinates[1][0]):
+        print("These patterns share the same row coordinates.")
+        print("These patterns are horizontally aligned!")
+        return True
+    else:
+        print("ERROR: These patterns do not share the same row coordinates and are not horizontally aligned!")
+        return False
+        
+    
             
 def main():
     ...
@@ -175,7 +203,7 @@ def main():
             break
     
     # TODO: 3) Check pattern alignment
-    
+    aligned = check_pattern_alignment(coords_found)
     # TODO: 4) Move image and display
     
     # TODO: 5) Image statistics
