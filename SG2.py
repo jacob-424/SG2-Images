@@ -48,7 +48,6 @@ def convertImageToArr(filename: str) -> np.ndarray:
         Sources:
             Adapted from the imageToArray function from SG1- Small Group 3.
             the original code was modified to meet the requirements of this project.
-            
     """
     # converts image to grayscale
     image_to_arr = Image.open(filename).convert("L")
@@ -71,8 +70,7 @@ def patternDetection(image_arr: np.ndarray) -> list[tuple[int,int]]:
             
         Sources:
             Adapted from the patternLookup function from SG1- Small Group 3.
-            the original code was modified to meet the requirements of this project.
-            
+            the original code was modified to meet the requirements of this project.           
     """
     
     def patternMatch(window: np.ndarray, pattern: np.ndarray) -> bool:
@@ -89,7 +87,6 @@ def patternDetection(image_arr: np.ndarray) -> list[tuple[int,int]]:
         Sources:
             Adapted from the patternMatch function from SG1- Small Group 3.
             the original code was modified to meet the requirements of this project.
-
         """
         
         #compare the elements only if the shapes are equal,
@@ -115,8 +112,7 @@ def patternDetection(image_arr: np.ndarray) -> list[tuple[int,int]]:
         [0,255,255,255,255,255,0,255,255,255,255,255,0],
         [0,255,255,255,255,255,0,255,255,255,255,255,0],
         [0, 0,  0,  0,  0,  0, 0, 0,  0,  0,  0,  0, 0]])
- 
-          
+
     occurrences = 0
     coordinates = []
     row = 0
@@ -129,8 +125,8 @@ def patternDetection(image_arr: np.ndarray) -> list[tuple[int,int]]:
     pattern_cols = pattern.shape[1]
     
     #iterate over the entire target matrix, sliding a 11x11 submatrix over it.
-    for row in range (image_rows - pattern_rows + 1):
-        for column in range(image_cols - pattern_cols + 1):
+    for row in range (image_rows - pattern_rows - 1):
+        for column in range(image_cols - pattern_cols - 1):
             submatrix = image_arr[row:row + pattern_rows, column:column + pattern_cols]
             
             # check if the submatrix matches the pattern
