@@ -414,22 +414,19 @@ def imageStats(arr_image):
             
 def main():
     display_introduction()
-    # TODO: 1) PNG File input and validation
+    aligned = False
+    while not aligned:
+        while True:
+            validated_file = Validation()
+            print(f"Proceeding with file: {validated_file}\n")
+            arr_image = convertImageToArr(validated_file)
+            coords_found = patternDetection(arr_image)
+            if coords_found is not None:
+                break
+            
+        aligned = check_pattern_alignment(coords_found)
     
-    # TODO: 2) Plus pattern detection
-    while True:
-        validated_file = Validation()
-        print(f"Proceeding with file: {validated_file}\n")
-        arr_image = convertImageToArr(validated_file)
-        coords_found = patternDetection(arr_image)
-        if coords_found is not None:
-            break
-    
-    # TODO: 3) Check pattern alignment
-    aligned = check_pattern_alignment(coords_found)
-    # TODO: 4) Move image and display
     ImageTranslation(validated_file, coords_found)
-    # TODO: 5) Image statistics
     imageStats(arr_image)
 
 if __name__ == "__main__":
