@@ -64,7 +64,7 @@ def Validation():
 
         filename = input("Enter PNG File: ").strip()
 
-        if not filename.endswith(".PNG"):
+        if not filename.lower().endswith(".PNG"):
             print("Error: This is not a PNG file. Please try again. ")
             continue
 
