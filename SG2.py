@@ -64,7 +64,7 @@ def Validation():
 
         filename = input("Enter PNG File: ").strip()
 
-        if not filename.lower().endswith(".PNG"):
+        if not filename.lower().endswith(".png"):
             print("Error: This is not a PNG file. Please try again. ")
             continue
 
@@ -211,8 +211,8 @@ def patternDetection(image_arr: np.ndarray) -> list[tuple[int,int]]:
     pattern_cols = pattern.shape[1]
     
     #iterate over the entire target matrix, sliding a 11x11 submatrix over it.
-    for row in range (image_rows - pattern_rows - 1):
-        for column in range(image_cols - pattern_cols - 1):
+    for row in range (image_rows - pattern_rows + 1):
+        for column in range(image_cols - pattern_cols + 1):
             submatrix = image_arr[row:row + pattern_rows, column:column + pattern_cols]
             
             # check if the submatrix matches the pattern
@@ -425,6 +425,8 @@ def main():
                 break
         
         aligned = check_pattern_alignment(coords_found)
+        if not aligned:
+            input("Press ENTER to try a different file.")
     ImageTranslation(validated_file, coords_found)
     imageStats(arr_image)
 
