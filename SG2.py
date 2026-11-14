@@ -1,4 +1,3 @@
-import tkinter as tk
 import numpy as np
 import sys
 from PIL import Image
@@ -14,7 +13,7 @@ from pathlib import Path
     
         * 10/22/26: Project Started
         * 11/11/2026: Merged All functions into the main file
-        
+        * 11/13/2026: Finalized documentation
                           
     Class: Introduction to the Software Profession
     
@@ -34,10 +33,33 @@ from pathlib import Path
         displayed to the screen.
     5. Image Statistics: Detailed statistics about the original image is displayed to the screen
     
-    External files used:
-        * https://stackoverflow.com/questions/82831/how-do-i-check-whether-a-file-exists-without-exceptions, https://www.w3schools.com/python/python_user_input.asp
-        * Functions adapted from SG1 - Small Group 3
-        * https://www.geeksforgeeks.org/numpy/numpy-array-functions/
+    External Files Used:
+        PNG file: A user supplied png file located in the program's directory.
+        
+    Central Data Structures:
+        validated_file (pathlib.Path): The path of the user supplied PNG
+        arr_image (np.ndarray): The PNG represented as an np array where each value corresponds to a pixel color
+        coords_found (list[tuple[int,int]]): The locations for each of the two plus patterns found in arr_image
+    
+    Sources:
+        Validation():
+            * https://stackoverflow.com/questions/82831/how-do-i-check-whether-a-file-exists-without-exceptions
+            * https://www.w3schools.com/python/python_user_input.asp
+        
+        convertImageToArr():
+            * Adapted from the imageToArray function from SG1- Small Group 3.
+              the original code was modified to meet the requirements of this project.
+              
+        patternDetection():
+            * Adapted from the patternLookup function from SG1- Small Group 3.
+              the original code was modified to meet the requirements of this project.
+              
+              patternMatch():
+                  * Adapted from the patternMatch function from SG1- Small Group 3.
+                    the original code was modified to meet the requirements of this project.
+                    
+        imageStats():
+            * https://www.geeksforgeeks.org/numpy/numpy-array-functions/
 """
 
 def display_introduction():
@@ -49,13 +71,10 @@ def display_introduction():
 
 
 def Validation():
-    """
-    SG2: Processing of Images
-    CS 4500
+    """ Gets from the user a valid PNG file located in the program's directory.
 
-    This program processes grayscale png ballot images to find and verify specific alignment markers.
-
-    Sources: https://stackoverflow.com/questions/82831/how-do-i-check-whether-a-file-exists-without-exceptions, https://www.w3schools.com/python/python_user_input.asp
+        Returns:
+            file_path (pathlib.Path): The file path of the png
     """
     # Find the directory
     program_directory = Path(__file__).resolve().parent
@@ -130,10 +149,6 @@ def convertImageToArr(filename: str) -> np.ndarray:
         
         Returns:
             image_to_arr (np.ndarray): holds the image as a np array.
-            
-        Sources:
-            Adapted from the imageToArray function from SG1- Small Group 3.
-            the original code was modified to meet the requirements of this project.
     """
     # converts image to grayscale
     image_to_arr = Image.open(filename).convert("L")
@@ -152,11 +167,7 @@ def patternDetection(image_arr: np.ndarray) -> list[tuple[int,int]]:
             image_arr (np.ndarray): contains the image as a np array.
         
         Returns:
-            coordinates (list[tuple[int,int]]): holds the coordinates found in the image as (row, column)
-            
-        Sources:
-            Adapted from the patternLookup function from SG1- Small Group 3.
-            the original code was modified to meet the requirements of this project.           
+            coordinates (list[tuple[int,int]]): holds the coordinates found in the image as (row, column)       
     """
     
     def patternMatch(window: np.ndarray, pattern: np.ndarray) -> bool:
@@ -169,10 +180,6 @@ def patternDetection(image_arr: np.ndarray) -> list[tuple[int,int]]:
         
         Returns:
             "True" if the arrays match, "False otherwise"
-            
-        Sources:
-            Adapted from the patternMatch function from SG1- Small Group 3.
-            the original code was modified to meet the requirements of this project.
         """
         
         #compare the elements only if the shapes are equal,
@@ -247,6 +254,7 @@ def patternDetection(image_arr: np.ndarray) -> list[tuple[int,int]]:
 def check_pattern_alignment(coordinates):
     """ This function compares the coordinate values returned from the "patternDetection" function, checking
         for horizontal alignment between the detected patterns based on row values of pattern center.
+        
         Globals:
             None
         Args:
@@ -256,7 +264,6 @@ def check_pattern_alignment(coordinates):
         Returns:
             True if the center coordinates share the same row and are horizontally aligned
             False otherwise
-            
         """
     
     print(f"\tPattern 1 has size of 13 x 13 with center located at {coordinates[0]}.")
@@ -272,7 +279,12 @@ def check_pattern_alignment(coordinates):
         
 
 def ImageTranslation(filename, coordinates):
-    """
+    """ Creates a new PNG named BallotY.png with the leftmost plus pattern shifted to the top left of the image.
+        Displays both the original PNG and BallotY.png to the user.
+
+    Args:
+        filename (pathlib.Path): The path of the user supplied PNG
+        coordinates (list[tuple[int,int]]): Holds the coordinates found in the image as (row, column)
     """
 
     if len(coordinates) != 2:
@@ -329,8 +341,9 @@ def ImageTranslation(filename, coordinates):
 
     print(f"Saved translated image as '{output_path}'")
     
+    name = Path(filename).name
     # Display both images to the user
-    print("Displaying BallotX.png and BallotY.png")
+    print(f"Displaying {name} and BallotY.png")
 
     original_display.show()
     ballotY_img.show()
@@ -367,16 +380,16 @@ def getGrayness(pixel):
         
     return grayness
 
-def imageStats(arr_image):
+def imageStats(arr_image, validated_file):
     """ Outputs various statistics about BallotX.png including height/width, range of pixel values,
         the number of black and white pixels, and the average pixel value.
 
     Args:
         arr_image (np.ndarray): BallotX.png as an array of pixel values between 0-255
-    
-    Sources:
-        https://www.geeksforgeeks.org/numpy/numpy-array-functions/
+        validated_file (pathlib.Path): The path of the user supplied PNG
     """
+    filename = Path(validated_file).name
+    
     ### Collect stats
     height = arr_image.shape[0]
     width = arr_image.shape[1]
@@ -396,7 +409,7 @@ def imageStats(arr_image):
     avg_grayness = getGrayness(avg_pixel)
     
     ### Output stats
-    print("\nBallotX.png Statistics:")
+    print(f"\n{filename} Statistics:")
     
     print(f"Height: {height} pixels")
     print(f"Width: {width} pixels")
@@ -428,7 +441,7 @@ def main():
         if not aligned:
             input("Press ENTER to try a different file.")
     ImageTranslation(validated_file, coords_found)
-    imageStats(arr_image)
+    imageStats(arr_image, validated_file)
 
 if __name__ == "__main__":
     main()
