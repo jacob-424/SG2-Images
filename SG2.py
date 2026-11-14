@@ -279,8 +279,8 @@ def check_pattern_alignment(coordinates):
         
 
 def ImageTranslation(filename, coordinates):
-    """ Creates a new PNG named BallotY.png with the leftmost plus pattern shifted to the top left of the image.
-        Displays both the original PNG and BallotY.png to the user.
+    """ Translates the image so the upper-left corner of the leftmost detected pattern is at (0, 0).
+        Saves the translated image as BallotY.png and displays both images for comparison.
 
     Args:
         filename (pathlib.Path): The path of the user supplied PNG
@@ -426,6 +426,14 @@ def imageStats(arr_image, validated_file):
 
             
 def main():
+    """
+    Controls the main program flow by calling the
+    validation, conversion, detection, alignment,
+    translation, and statistics functions.
+    
+    Allows the user to retry if detection or
+    alignment fails.
+    """
     display_introduction()
     aligned = False
     while not aligned:
