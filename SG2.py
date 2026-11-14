@@ -273,6 +273,11 @@ def check_pattern_alignment(coordinates):
 
 def ImageTranslation(filename, coordinates):
     """
+    Translates the image so the upper-left corner of the
+    leftmost detected pattern is at (0, 0).
+    
+    Saves the translated image as BallotY.png and
+    displays both images for comparison.
     """
 
     if len(coordinates) != 2:
@@ -413,6 +418,14 @@ def imageStats(arr_image):
 
             
 def main():
+    """
+    Controls the main program flow by calling the
+    validation, conversion, detection, alignment,
+    translation, and statistics functions.
+    
+    Allows the user to retry if detection or
+    alignment fails.
+    """
     display_introduction()
     aligned = False
     while not aligned:
